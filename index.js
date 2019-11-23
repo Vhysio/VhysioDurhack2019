@@ -83,6 +83,9 @@ async function predict() {
                                 STREAK +
                                 " times in a row"
                         );
+                            // Current Status
+                        footer.innerHTML = "Status: " + prediction[i].className;
+
                         lastCall = prediction[i].className;
                         var msg = new SpeechSynthesisUtterance(
                             prediction[i].className
