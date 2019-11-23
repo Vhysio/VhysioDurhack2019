@@ -16,15 +16,16 @@ async function init() {
 
     // Convenience function to setup a webcam
     const flip = true; // whether to flip the webcam
-    webcam = new tmPose.Webcam(200, 200, flip); // width, height, flip
+    webcam = new tmPose.Webcam(parent.innerWidth, parent.innerHeight, flip); // width, height, flip
     await webcam.setup(); // request access to the webcam
     webcam.play();
     window.requestAnimationFrame(loop);
 
     // append/get elements to the DOM
     const canvas = document.getElementById("canvas");
-    canvas.width = 200;
-    canvas.height = 200;
+    canvas.width = parent.innerWidth;
+    canvas.height = parent.innerHeight;
+
     ctx = canvas.getContext("2d");
     labelContainer = document.getElementById("label-container");
     for (let i = 0; i < maxPredictions; i++) {
@@ -63,7 +64,7 @@ async function predict() {
             var msg = new SpeechSynthesisUtterance(prediction[i].className);
             window.speechSynthesis.speak(msg);
             console.log("Taking a break...");
-            await sleep(2000);
+            // await sleep(2000);
             console.log("Two seconds later, showing sleep in a loop...");
         }
     }
