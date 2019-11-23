@@ -2,9 +2,15 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";
+// const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
+const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, webcam, ctx, labelContainer, maxPredictions;
 
+const STREAK = 10;
+const CONFIDENCE_BENCHMARK = 0.5;
+var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
+var lastCall = "Unsure";
+var flag = true;
 async function init() {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
@@ -46,6 +52,8 @@ function sleep(ms) {
 }
 
 async function predict() {
+    var current_major_pose;
+    var current_major_pose_confidence = 0;
     // Prediction #1: run input through posenet
     // estimatePose can take in an image, video or canvas html element
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
@@ -58,14 +66,49 @@ async function predict() {
             ": " +
             prediction[i].probability.toFixed(2);
         labelContainer.childNodes[i].innerHTML = classPrediction;
-        console.log(prediction[i].probability.toFixed(2));
-        if (prediction[i].probability.toFixed(2) > 0.5) {
-            console.log("YUP", prediction[i].className);
-            var msg = new SpeechSynthesisUtterance(prediction[i].className);
-            window.speechSynthesis.speak(msg);
-            console.log("Taking a break...");
-            // await sleep(2000);
-            console.log("Two seconds later, showing sleep in a loop...");
+
+        if (prediction[i].probability > CONFIDENCE_BENCHMARK) {
+            if (currentPosture_and_stream.Posture == prediction[i].className) {
+                console.log(
+                    currentPosture_and_stream.Streak,
+                    lastCall,
+                    prediction[i].className
+                );
+                if (currentPosture_and_stream.Streak > STREAK) {
+                    if (lastCall != prediction[i].className) {
+                        console.log(
+                            "Has been " +
+                                prediction[i].className +
+                                " " +
+                                STREAK +
+                                " times in a row"
+                        );
+                        lastCall = prediction[i].className;
+                        var msg = new SpeechSynthesisUtterance(
+                            prediction[i].className
+                        );
+                        window.speechSynthesis.speak(msg);
+                    } else if (
+                        lastCall == "Correct Lunge" ||
+                        lastCall == "Correct"
+                    ) {
+                        if (flag) {
+                            var msg = new SpeechSynthesisUtterance(
+                                "NEXT STRETCH"
+                            );
+                            window.speechSynthesis.speak(msg);
+                            flag = false;
+                        }
+                    }
+                } else {
+                    currentPosture_and_stream.Streak += 1;
+                }
+            } else {
+                console.log("Yeahhh");
+                currentPosture_and_stream.Posture = prediction[i].className;
+                currentPosture_and_stream.Streak = 0;
+                console.log(currentPosture_and_stream.Posture);
+            }
         }
     }
 
