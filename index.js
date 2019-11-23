@@ -2,15 +2,18 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-// const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
+//const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
 const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, webcam, ctx, labelContainer, maxPredictions;
+
+var bar_colours = ["bg-success","bg-warning","bg-info","bg-danger","bg-success","bg-info","bg-warning","bg-danger"]
 
 const STREAK = 10;
 const CONFIDENCE_BENCHMARK = 0.5;
 var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
 var flag = true;
+
 async function init() {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
@@ -59,14 +62,17 @@ async function predict() {
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
     // Prediction 2: run input through teachable machine classification model
     const prediction = await model.predict(posenetOutput);
-
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
             prediction[i].className +
             ": " +
-            prediction[i].probability.toFixed(2);
-        labelContainer.childNodes[i].innerHTML = classPrediction;
+            prediction[i].probability.toFixed(2) +
 
+            `<div class="progress">
+                <div class="progress-bar progress-bar-striped ${bar_colours[i]}" role="progressbar" style="width: 10%" aria-valuenow=${prediction[i].probability.toFixed(2)} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>`;
+        labelContainer.childNodes[i].innerHTML = classPrediction;
+        console.log("AJ:", prediction[i].className, classPrediction)
         if (prediction[i].probability > CONFIDENCE_BENCHMARK) {
             if (currentPosture_and_stream.Posture == prediction[i].className) {
                 console.log(
