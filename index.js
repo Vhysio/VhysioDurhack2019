@@ -6,6 +6,8 @@
 const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, webcam, ctx, labelContainer, maxPredictions;
 
+const STREAK = 10;
+const CONFIDENCE_BENCHMARK = 0.5;
 var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
 var flag = true;
@@ -64,19 +66,21 @@ async function predict() {
             prediction[i].probability.toFixed(2);
         labelContainer.childNodes[i].innerHTML = classPrediction;
 
-        if (prediction[i].probability > 0.5) {
+        if (prediction[i].probability > CONFIDENCE_BENCHMARK) {
             if (currentPosture_and_stream.Posture == prediction[i].className) {
                 console.log(
                     currentPosture_and_stream.Streak,
                     lastCall,
                     prediction[i].className
                 );
-                if (currentPosture_and_stream.Streak > 10) {
+                if (currentPosture_and_stream.Streak > STREAK) {
                     if (lastCall != prediction[i].className) {
                         console.log(
                             "Has been " +
                                 prediction[i].className +
-                                " 500 times in a row"
+                                " " +
+                                STREAK +
+                                " times in a row"
                         );
                         lastCall = prediction[i].className;
                         var msg = new SpeechSynthesisUtterance(
