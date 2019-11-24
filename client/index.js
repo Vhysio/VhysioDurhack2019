@@ -73,22 +73,19 @@ async function init() {
 
     var el = document.getElementById("filler-label-container");
     el.remove();
+    var bel = document.getElementById("speech");
+    bel.remove();
 
-    speech.innerHTML = `<div
-                            class="btn-group"
-                            role="group"
-                            aria-label="Basic example"
-                        >
-                            <button type="button" class="btn btn-secondary">
-                                Left
-                            </button>
-                            <button type="button" class="btn btn-secondary">
-                                Middle
-                            </button>
-                            <button type="button" class="btn btn-secondary">
-                                Right
-                            </button>
-                        </div>`;
+    sequence.innerHTML = `<div class="scrollmenu">
+    <a href="#BackBend" class="active" id="stretch1" >Back Bend</a>
+    <a href="#Lunge" id="stretch2" >Lunge Rotate</a>
+    <a href="#calf" id="stretch3" >Calf</a>
+    <a href="#about" id="stretch4">Shoulder</a>
+    <a href="#support">Neck</a>
+    <a href="#blog">Ankle</a>
+    <a href="#tools"></a>  
+    <a href="#base">Base</a>
+  </div>`;
 }
 
 async function loop(timestamp) {
@@ -159,6 +156,8 @@ async function predict() {
                             );
                             window.speechSynthesis.speak(msg);
                             flag = false;
+                            document.getElementById("start").style.background =
+                                "green";
                         }
                     }
                 } else {
