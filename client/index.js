@@ -159,10 +159,12 @@ async function predict() {
                         window.speechSynthesis.speak(msg);
                     } else {
                         if (no_stretch == 1 && lastCall == "Correct") {
+                            console.log(msg, "yeeepo");
                             var msg = new SpeechSynthesisUtterance(
-                                "Finished Back Bend. NEXT STRETCH Lunge Rotate"
+                                "Hold there for 10 seconds. Finished Back Bend"
                             );
                             window.speechSynthesis.speak(msg);
+
                             flag = false;
                             console.log("start" + no_stretch);
                             document.getElementById(
@@ -193,6 +195,7 @@ async function predict() {
                         }
                     }
                 } else {
+                    console.log("streak", currentPosture_and_stream.Streak);
                     currentPosture_and_stream.Streak += 1;
                 }
             } else {
