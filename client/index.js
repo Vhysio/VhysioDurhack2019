@@ -18,6 +18,8 @@ var bar_colours = [
     "bg-danger"
 ];
 
+let no_stretch = 1;
+
 const STREAK = 20;
 const CONFIDENCE_BENCHMARK = 0.5;
 var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
@@ -156,8 +158,9 @@ async function predict() {
                             );
                             window.speechSynthesis.speak(msg);
                             flag = false;
-                            document.getElementById("start").style.background =
-                                "green";
+                            document.getElementById(
+                                "start" + no_stretch
+                            ).style.background = "green";
                         }
                     }
                 } else {
