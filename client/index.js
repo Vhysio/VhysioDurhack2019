@@ -2,9 +2,11 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL2 = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/"; // Lunge
+// const URL2 = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/"; // Lunge
+const URL2 = "https://teachablemachine.withgoogle.com/models/Jttf39ey/"; // 2.0 lunge
 
-const URL1 = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
+// const URL1 = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
+const URL1 = "https://teachablemachine.withgoogle.com/models/8gQNM0Uk/"; // 2.0
 let model, model2, webcam, ctx, labelContainer, maxPredictions;
 
 var bar_colours = [
@@ -20,7 +22,7 @@ var bar_colours = [
 
 let no_stretch = 1;
 
-const STREAK = 20;
+const STREAK = 40;
 const CONFIDENCE_BENCHMARK = 0.5;
 var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
@@ -116,6 +118,10 @@ async function predict() {
     // Prediction 2: run input through teachable machine classification model
 
     for (let i = 0; i < maxPredictions; i++) {
+        prediction[i].className =
+            prediction[i].className == "Kness too bent"
+                ? "Knees Too Bent"
+                : prediction[i].className;
         const classPrediction =
             prediction[i].className +
             ": " +
@@ -158,7 +164,7 @@ async function predict() {
                         );
                         window.speechSynthesis.speak(msg);
                     } else {
-                        if (no_stretch == 1 && lastCall == "Correct") {
+                        if (no_stretch == 1 && lastCall == "Correct Bend") {
                             console.log(msg, "yeeepo");
                             var msg = new SpeechSynthesisUtterance(
                                 "Hold there for 10 seconds. Finished Back Bend"
@@ -241,7 +247,7 @@ try {
             if (transcript.includes("start exercises")) {
                 if (started) {
                     started = false;
-                    init();
+                    init(0);
 
                     console.log("Start Exercises");
                     // Removes the div with the 'div-02' id}}
