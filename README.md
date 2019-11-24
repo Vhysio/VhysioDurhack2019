@@ -29,12 +29,11 @@ HTML that forms the backbone of the website.
 Works with HTML to add functionality to site.  
 Loads the model and metadata and handles image data.
 
-### micWork
+###micWork
 
 Uses Google Cloud SDK to utilise Google Cloud Speech-To-Text, so visually impaired 
 users can communicate with the application.
 
 * MicrophoneStream.js: Listens and transcribes text. Performs functions 
 based on input received
-
 
