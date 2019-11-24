@@ -1,8 +1,10 @@
 # Vhysio: AI Physio for Visually Impaired
-Access the live application at: https://vhysio.herokuapp.com/
+* Access the live application at: https://vhysio.herokuapp.com/
+* View our presentation slides at: http://bit.ly/2rnkMAU
 
-Vhysio is a tool which makes physiotherapy more accessible to those visually impaired. Talking through exercises and responding to users' postures in real time, 
-Vhysio makes it easier for users to not only complete, but to improve their techniques independently.  
+Vhysio is a tool which makes physiotherapy more accessible to those visually impaired. Talking through exercises and responding to users' postures in real-time. 
+
+Vhysio makes it easier for users to not only complete but to improve their techniques independently.  
 
 
 ## Technology
@@ -10,30 +12,52 @@ Vhysio makes it easier for users to not only complete, but to improve their tech
 Vhysio utilises AI Machine Learning technology to learn what makes a particular position correct and incorrect. It has learnt
 off a dataset of images to predict whether the position is correct, or incorrect - and what makes it so.  
 
-The application utilises Windows WebKit Speech Recognition, which makes it fully functional on 
-chrome. Only the camera is functional on Safari. The application does not run on iOS or Android.
+We have used 'TeachableMachine' A web-based AI Machine Learning tool to train our models in the various physiotherapy poses. 
+
+Google's Speech-to-Text API was also used to enable the application to be accessible by the visually impaired. The user can start their exercises via speech remotely this is more convenient and easier to use for our target audience. 
+
+The application utilises Windows WebKit Speech Recognition, for text-to-speech. This is useful for the visually impaired as they can hear if they are in the right position as the application will tell them to adjust their posture if incorrect.
+ 
+We also use the webcam to track the users movement which is fed as input to the machine learning model and outputs a status on the users posture. 
+
+## Supportability
+
+This is fully supported on Desktop/Android Google Chrome. However from our research, IOS and Safari is unsupported. 
+
+For best results it is advised to use Google Chrome on a desktop.
 
 ## Main files
 
 * [Index.html](index.html) 
 * [Index.js](index.js)
-* [micWork](micWork)
+* [Index.js](index.js)
 * [app.js](app.js)
+* [micWork](micWork)
+
+## Client Folder
+
+* The web application is located in the clients folder. The web application consists of two files: index.html and index.js.
 
 ### Index.html
 
-HTML that forms the backbone of the website.
+* The index.html contains all the HTML that forms the backbone of the website. 
+* We have used the bootstrap open-source CSS framework for our front-end development.
 
 ### Index.js
 
-Works with HTML to add functionality to site.  
-Loads the model and metadata and handles image data.
+* index.js contains the Javascript code for the web application. This works with HTML to add functionality to the site.
+* Loads the model and metadata and handles image data.
 
-###micWork
+## app.js
 
-Uses Google Cloud SDK to utilise Google Cloud Speech-To-Text, so visually impaired 
-users can communicate with the application.
+* The app.js is the server-side backend code which serves the web application. 
+* We have decided to use Heroku as the hosting platform which can be accessed from the link above. 
+
+## micWork 
+
+(Deprecated due to ease of use of in-browser 'Windows WebKit Speech Recognition' alternative)
+
+Uses Google Cloud SDK to utilise Google Cloud Speech-To-Text, so visually impaired users can communicate with the application.
 
 * MicrophoneStream.js: Listens and transcribes text. Performs functions 
 based on input received
-
