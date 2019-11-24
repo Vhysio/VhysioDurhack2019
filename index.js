@@ -55,6 +55,8 @@ async function init() {
         "Starting Your Exercises. Beginning with Bend Over Back Stretch"
     );
     window.speechSynthesis.speak(startmsg);
+    var el = document.getElementById("speech");
+    el.remove();
 }
 
 async function loop(timestamp) {
@@ -170,8 +172,7 @@ recognition.onresult = event => {
                 init();
 
                 console.log("Start Exercises");
-                var el = document.getElementById("speech");
-                el.remove(); // Removes the div with the 'div-02' id}}
+                // Removes the div with the 'div-02' id}}
             }
         }
         if (event.results[i].isFinal) {
