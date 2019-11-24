@@ -74,16 +74,16 @@ async function predict() {
         const classPrediction =
             prediction[i].className +
             ": " +
-            prediction[i].probability.toFixed(2) * 100 +
+            (prediction[i].probability * 100).toFixed(0) +
             "%" +
             `<div class="progress">
                 <div class="progress-bar progress-bar-striped ${
                     bar_colours[i]
-                }" role="progressbar" style="width: 10%" aria-valuenow=${prediction[
-                i
-            ].probability.toFixed(
-                2
-            )} aria-valuemin="0" aria-valuemax="100"></div>
+                }" role="progressbar" style="width: ${(
+                prediction[i].probability * 100
+            ).toFixed(0)}%" aria-valuenow=${(
+                prediction[i].probability * 100
+            ).toFixed(0)} aria-valuemin="0" aria-valuemax="100"></div>
             </div>`;
 
         labelContainer.childNodes[i].innerHTML = classPrediction;
@@ -149,3 +149,29 @@ function drawPose(pose) {
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
     }
 }
+
+window.SpeechRecognition =
+    window.webkitSpeechRecognition || window.SpeechRecognition;
+let finalTranscript = "";
+let recognition = new window.SpeechRecognition();
+recognition.interimResults = true;
+recognition.maxAlternatives = 10;
+recognition.continuous = true;
+recognition.onresult = event => {
+    let interimTranscript = "";
+    for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+        let transcript = event.results[i][0].transcript;
+        if (transcript.includes("start exercises")) {
+            init();
+        }
+        if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+        } else {
+            interimTranscript += transcript;
+        }
+    }
+    speech_input.innerHTML =
+        '<i style="color:#ddd;">' + interimTranscript + "</>";
+    // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
+};
+recognition.start();
