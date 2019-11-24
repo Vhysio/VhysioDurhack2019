@@ -1,10 +1,13 @@
-# Vhysio: AI Physio for Visually Impaired
-By Alisa Hussain, AJ Sung & Ben Harries
-* Access the live application at: https://vhysio.herokuapp.com/
-* Our DevPost Submission for Durhack2019: https://devpost.com/software/durhack2019-qiptux 
-* View our presentation slides at: http://bit.ly/2rnkMAU
+# Vhysio: AI Physio for the Visually Impaired
+**By Alisa Hussain, AJ Sung & Ben Harries**
 
-Vhysio is a tool which makes physiotherapy more accessible to those visually impaired. Talking through exercises and responding to users' postures in real-time. 
+***1st Place Winners of DurHack 2019***
+
+* Access the live application at: https://vhysio.herokuapp.com/
+* View our presentation slides at: http://bit.ly/2OEQrWv
+* Our DevPost Submission for DurHack2019: https://devpost.com/software/durhack2019-qiptux
+
+### Vhysio is a web app utilising cutting edge Machine Learning library, tensorflow.js to enable accessible physiotherapy for the Visually Impaired, talking through exercises by responding to users' postures in real-time. 
 
 Vhysio makes it easier for users to not only complete but to improve their techniques independently.  
 
@@ -34,10 +37,10 @@ During our software development cycle, we used Notion for allocating work segmen
 
 ## Main files
 
-* [Index.html](index.html) 
-* [Index.js](index.js)
-* [app.js](app.js)
-* [micWork](micWork)
+* [Index.html]() 
+* [Index.js]()
+* [app.js]()
+* [micWork]()
 
 ## Client Folder
 
@@ -55,7 +58,7 @@ During our software development cycle, we used Notion for allocating work segmen
 
 ## app.js
 
-* The app.js is the server-side backend code which serves the web application. 
+* The app.js is the server-side back-end code. This serves the web application using express on a node.js server. 
 * We have decided to use Heroku as the hosting platform which can be accessed from the link above. 
 
 ## micWork 
