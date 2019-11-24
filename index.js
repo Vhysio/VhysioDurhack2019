@@ -3,10 +3,20 @@
 
 // the link to your model provided by Teachable Machine export panel
 //const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
+
 const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-var bar_colours = ["bg-success","bg-warning","bg-info","bg-danger","bg-success","bg-info","bg-warning","bg-danger"]
+var bar_colours = [
+    "bg-success",
+    "bg-warning",
+    "bg-info",
+    "bg-danger",
+    "bg-success",
+    "bg-info",
+    "bg-warning",
+    "bg-danger"
+];
 
 const STREAK = 10;
 const CONFIDENCE_BENCHMARK = 0.5;
@@ -64,14 +74,20 @@ async function predict() {
         const classPrediction =
             prediction[i].className +
             ": " +
-            prediction[i].probability.toFixed(2) * 100 + "%" +
-
+            prediction[i].probability.toFixed(2) * 100 +
+            "%" +
             `<div class="progress">
-                <div class="progress-bar progress-bar-striped ${bar_colours[i]}" role="progressbar" style="width: 10%" aria-valuenow=${prediction[i].probability.toFixed(2)} aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped ${
+                    bar_colours[i]
+                }" role="progressbar" style="width: 10%" aria-valuenow=${prediction[
+                i
+            ].probability.toFixed(
+                2
+            )} aria-valuemin="0" aria-valuemax="100"></div>
             </div>`;
 
         labelContainer.childNodes[i].innerHTML = classPrediction;
-        console.log("AJ:", prediction[i].className, classPrediction)
+        console.log("AJ:", prediction[i].className, classPrediction);
         if (prediction[i].probability > CONFIDENCE_BENCHMARK) {
             if (currentPosture_and_stream.Posture == prediction[i].className) {
                 console.log(
@@ -88,7 +104,7 @@ async function predict() {
                                 STREAK +
                                 " times in a row"
                         );
-                            // Current Status
+                        // Current Status
                         footer.innerHTML = "Status: " + prediction[i].className;
 
                         lastCall = prediction[i].className;
@@ -133,3 +149,29 @@ function drawPose(pose) {
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
     }
 }
+
+window.SpeechRecognition =
+    window.webkitSpeechRecognition || window.SpeechRecognition;
+let finalTranscript = "";
+let recognition = new window.SpeechRecognition();
+recognition.interimResults = true;
+recognition.maxAlternatives = 10;
+recognition.continuous = true;
+recognition.onresult = event => {
+    let interimTranscript = "";
+    for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+        let transcript = event.results[i][0].transcript;
+        if (transcript.includes("start exercises")) {
+            init();
+        }
+        if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+        } else {
+            interimTranscript += transcript;
+        }
+    }
+    speech_input.innerHTML =
+        '<i style="color:#ddd;">' + interimTranscript + "</>";
+    // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
+};
+recognition.start();
