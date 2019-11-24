@@ -18,7 +18,7 @@ var bar_colours = [
     "bg-danger"
 ];
 
-const STREAK = 10;
+const STREAK = 20;
 const CONFIDENCE_BENCHMARK = 0.5;
 var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
@@ -51,6 +51,10 @@ async function init() {
         // and class labels
         labelContainer.appendChild(document.createElement("div"));
     }
+    var startmsg = new SpeechSynthesisUtterance(
+        "Starting Your Exercises. Beginning with Bend Over Back Stretch"
+    );
+    window.speechSynthesis.speak(startmsg);
 }
 
 async function loop(timestamp) {
@@ -87,7 +91,6 @@ async function predict() {
             </div>`;
 
         labelContainer.childNodes[i].innerHTML = classPrediction;
-        console.log("AJ:", prediction[i].className, classPrediction);
         if (prediction[i].probability > CONFIDENCE_BENCHMARK) {
             if (currentPosture_and_stream.Posture == prediction[i].className) {
                 console.log(
@@ -149,6 +152,7 @@ function drawPose(pose) {
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
     }
 }
+let started = true;
 window.SpeechRecognition =
     window.webkitSpeechRecognition || window.SpeechRecognition;
 let finalTranscript = "";
@@ -161,7 +165,14 @@ recognition.onresult = event => {
     for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
         let transcript = event.results[i][0].transcript;
         if (transcript.includes("start exercises")) {
-            init();
+            if (started) {
+                started = false;
+                init();
+
+                console.log("Start Exercises");
+                var el = document.getElementById("speech");
+                el.remove(); // Removes the div with the 'div-02' id}}
+            }
         }
         if (event.results[i].isFinal) {
             finalTranscript += transcript;
