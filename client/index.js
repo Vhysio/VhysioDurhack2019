@@ -57,21 +57,6 @@ async function init() {
         "Starting Your Exercises. Beginning with Bend Over Back Stretch"
     );
     window.speechSynthesis.speak(startmsg);
-    speech.innerHTML = `<div
-    class="btn-group"
-    role="group"
-    aria-label="Basic example"
->
-    <button type="button" class="btn btn-secondary">
-        Left
-    </button>
-    <button type="button" class="btn btn-secondary">
-        Middle
-    </button>
-    <button type="button" class="btn btn-secondary">
-        Right
-    </button>
-</div>`;
 
     var el = document.getElementById("filler-label-container");
     el.remove();
