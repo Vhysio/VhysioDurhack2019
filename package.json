@@ -1,0 +1,19 @@
+{
+  "name": "durhack2019",
+  "version": "1.0.0",
+  "description": "VHYSIO",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenHarries/Durhack2019.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenHarries/Durhack2019/issues"
+  },
+  "homepage": "https://github.com/BenHarries/Durhack2019#readme"
+}
