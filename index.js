@@ -3,6 +3,7 @@
 
 // the link to your model provided by Teachable Machine export panel
 //const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
+
 const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, webcam, ctx, labelContainer, maxPredictions;
 
