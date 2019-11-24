@@ -2,10 +2,10 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-//const URL = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/";   // Lunge
+const URL2 = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/"; // Lunge
 
 const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
-let model, webcam, ctx, labelContainer, maxPredictions;
+let model, model2, webcam, ctx, labelContainer, maxPredictions;
 
 var bar_colours = [
     "bg-success",
@@ -54,7 +54,7 @@ async function init() {
         labelContainer.appendChild(document.createElement("div"));
     }
     var startmsg = new SpeechSynthesisUtterance(
-        "Starting Your Exercises. Beginning with Bend Over Back Stretch"
+        "Starting Your Exercises. Beginning with Back Bend Stretch"
     );
     window.speechSynthesis.speak(startmsg);
 
@@ -66,12 +66,11 @@ async function init() {
     sequence.innerHTML = `<div class="scrollmenu">
     <a href="#BackBend" class="active" id="stretch1" >Back Bend</a>
     <a href="#Lunge" id="stretch2" >Lunge Rotate</a>
-    <a href="#calf" id="stretch3" >Calf</a>
-    <a href="#about" id="stretch4">Shoulder</a>
-    <a href="#support">Neck</a>
-    <a href="#blog">Ankle</a>
-    <a href="#tools"></a>  
-    <a href="#base">Base</a>
+    <a href="#calf" id="stretch3" >Calf Tense</a>
+    <a href="#about" id="stretch4">Shoulder Relax</a>
+    <a href="#support">Neck Soother</a>
+    <a href="#blog">Ankle Rolling</a>
+    <a href="#base">Chest Expand</a>
   </div>`;
 }
 
@@ -82,16 +81,17 @@ async function loop(timestamp) {
     window.requestAnimationFrame(loop);
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 async function predict() {
+    let { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+    let prediction = await model.predict(posenetOutput);
+
     // Prediction #1: run input through posenet
     // estimatePose can take in an image, video or canvas html element
-    const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+
     // Prediction 2: run input through teachable machine classification model
-    const prediction = await model.predict(posenetOutput);
+
+    // Prediction 2: run input through teachable machine classification model
+
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
             prediction[i].className +
@@ -117,6 +117,7 @@ async function predict() {
                     prediction[i].className
                 );
                 if (currentPosture_and_stream.Streak > STREAK) {
+                    console.log("Mumba", lastCall, no_stretch);
                     if (lastCall != prediction[i].className) {
                         console.log(
                             "Has been " +
@@ -137,15 +138,34 @@ async function predict() {
                         lastCall == "Correct Lunge" ||
                         lastCall == "Correct"
                     ) {
-                        if (flag) {
+                        if (no_stretch == 1) {
                             var msg = new SpeechSynthesisUtterance(
-                                "NEXT STRETCH"
+                                "Finished Back Bend. NEXT STRETCH Lunge Rotate"
                             );
                             window.speechSynthesis.speak(msg);
                             flag = false;
+                            console.log("start" + no_stretch);
                             document.getElementById(
-                                "start" + no_stretch
+                                "stretch" + no_stretch
                             ).style.background = "green";
+                            no_stretch += 1;
+                        } else if (no_stretch == 2) {
+                            var msg = new SpeechSynthesisUtterance(
+                                "Finished Lunge Rotate"
+                            );
+                            window.speechSynthesis.speak(msg);
+                            flag = false;
+                            console.log("start" + no_stretch);
+                            document.getElementById(
+                                "stretch" + no_stretch.toString()
+                            ).style.background = "green";
+                            no_stretch += 1;
+                        } else if (no_stretch == 3) {
+                            var msg = new SpeechSynthesisUtterance(
+                                "Finished Stretches. This continues your 3 day streak"
+                            );
+                            window.speechSynthesis.speak(msg);
+                            no_stretch += 1;
                         }
                     }
                 } else {
@@ -173,34 +193,46 @@ function drawPose(pose) {
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
     }
 }
-let started = true;
-window.SpeechRecognition =
-    window.webkitSpeechRecognition || window.SpeechRecognition;
-let finalTranscript = "";
-let recognition = new window.SpeechRecognition();
-recognition.interimResults = true;
-recognition.maxAlternatives = 10;
-recognition.continuous = true;
-recognition.onresult = event => {
-    let interimTranscript = "";
-    for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
-        let transcript = event.results[i][0].transcript;
-        if (transcript.includes("start exercises")) {
-            if (started) {
-                started = false;
-                init();
 
-                console.log("Start Exercises");
-                // Removes the div with the 'div-02' id}}
+try {
+    let started = true;
+    window.SpeechRecognition =
+        window.webkitSpeechRecognition || window.SpeechRecognition;
+    let finalTranscript = "";
+    let recognition = new window.SpeechRecognition();
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 10;
+    recognition.continuous = true;
+    recognition.onresult = event => {
+        let interimTranscript = "";
+        for (
+            let i = event.resultIndex, len = event.results.length;
+            i < len;
+            i++
+        ) {
+            let transcript = event.results[i][0].transcript;
+            if (transcript.includes("start exercises")) {
+                if (started) {
+                    started = false;
+                    init();
+
+                    console.log("Start Exercises");
+                    // Removes the div with the 'div-02' id}}
+                }
+            }
+            if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
             }
         }
-        if (event.results[i].isFinal) {
-            finalTranscript += transcript;
-        } else {
-            interimTranscript += transcript;
-        }
-    }
-    speech.innerHTML = '<i style="color:#ddd;">' + interimTranscript + "</>";
-    // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
-};
-recognition.start();
+        speech.innerHTML =
+            '<i style="color:#ddd;">' + interimTranscript + "</>";
+        // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
+    };
+    recognition.start();
+} catch (err) {
+    alert(
+        "Unfortunatley this Browser/OS combination is unsupported. For best results use Google Chrome on Desktop or Android"
+    );
+}
