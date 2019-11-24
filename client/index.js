@@ -4,7 +4,7 @@
 // the link to your model provided by Teachable Machine export panel
 const URL2 = "https://teachablemachine.withgoogle.com/models/9o5NXD5r/"; // Lunge
 
-const URL = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
+const URL1 = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 let model, model2, webcam, ctx, labelContainer, maxPredictions;
 
 var bar_colours = [
@@ -26,7 +26,12 @@ var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
 var flag = true;
 
-async function init() {
+async function init(URLno) {
+    var URL = URL1;
+    if (URLno == 1) {
+        URL = URL2;
+    }
+
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
@@ -56,6 +61,12 @@ async function init() {
     var startmsg = new SpeechSynthesisUtterance(
         "Starting Your Exercises. Beginning with Back Bend Stretch"
     );
+
+    if (URLno == 1) {
+        startmsg = new SpeechSynthesisUtterance(
+            "Second Exercise. Lunge Rotate Stretch"
+        );
+    }
     window.speechSynthesis.speak(startmsg);
 
     var el = document.getElementById("filler-label-container");
@@ -64,7 +75,7 @@ async function init() {
     bel.remove();
 
     sequence.innerHTML = `<div class="scrollmenu">
-    <a href="#BackBend" class="active" id="stretch1" >Back Bend</a>
+    <a href="#BackBend" id="stretch1" >Back Bend</a>
     <a href="#Lunge" id="stretch2" >Lunge Rotate</a>
     <a href="#calf" id="stretch3" >Calf Tense</a>
     <a href="#about" id="stretch4">Shoulder Relax</a>
@@ -72,6 +83,18 @@ async function init() {
     <a href="#blog">Ankle Rolling</a>
     <a href="#base">Chest Expand</a>
   </div>`;
+
+    if (URLno == 1) {
+        sequence.innerHTML = `<div class="scrollmenu">
+    <a href="#BackBend" id="stretch1" >Back Bend</a>
+    <a href="#Lunge" id="stretch1" >Lunge Rotate</a>
+    <a href="#calf" id="stretch3" >Calf Tense</a>
+    <a href="#about" id="stretch4">Shoulder Relax</a>
+    <a href="#support">Neck Soother</a>
+    <a href="#blog">Ankle Rolling</a>
+    <a href="#base">Chest Expand</a>
+  </div>`;
+    }
 }
 
 async function loop(timestamp) {
@@ -134,11 +157,8 @@ async function predict() {
                             prediction[i].className
                         );
                         window.speechSynthesis.speak(msg);
-                    } else if (
-                        lastCall == "Correct Lunge" ||
-                        lastCall == "Correct"
-                    ) {
-                        if (no_stretch == 1) {
+                    } else {
+                        if (no_stretch == 1 && lastCall == "Correct") {
                             var msg = new SpeechSynthesisUtterance(
                                 "Finished Back Bend. NEXT STRETCH Lunge Rotate"
                             );
@@ -149,7 +169,11 @@ async function predict() {
                                 "stretch" + no_stretch
                             ).style.background = "green";
                             no_stretch += 1;
-                        } else if (no_stretch == 2) {
+                            init(1);
+                        } else if (
+                            no_stretch == 2 &&
+                            lastCall == "Correct Lunge"
+                        ) {
                             var msg = new SpeechSynthesisUtterance(
                                 "Finished Lunge Rotate"
                             );
