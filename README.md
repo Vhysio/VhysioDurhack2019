@@ -1,5 +1,7 @@
 # Vhysio: AI Physio for Visually Impaired
+By Alisa Hussain, AJ Sung & Ben Harries
 * Access the live application at: https://vhysio.herokuapp.com/
+* Our DevPost Submission for Durhack2019: https://devpost.com/software/durhack2019-qiptux 
 * View our presentation slides at: http://bit.ly/2rnkMAU
 
 Vhysio is a tool which makes physiotherapy more accessible to those visually impaired. Talking through exercises and responding to users' postures in real-time. 
@@ -18,18 +20,21 @@ Google's Speech-to-Text API was also used to enable the application to be access
 
 The application utilises Windows WebKit Speech Recognition, for text-to-speech. This is useful for the visually impaired as they can hear if they are in the right position as the application will tell them to adjust their posture if incorrect.
  
-We also use the webcam to track the users movement which is fed as input to the machine learning model and outputs a status on the users posture. 
+We also use the webcam to track the user's movement which is fed as input to the machine learning model and outputs a status on the user's posture. 
 
 ## Supportability
 
-This is fully supported on Desktop/Android Google Chrome. However from our research, IOS and Safari is unsupported. 
+This is fully supported on Desktop/Android Google Chrome. However, from our research, IOS and Safari are unsupported. 
 
 For best results it is advised to use Google Chrome on a desktop.
+
+## Development
+
+During our software development cycle, we used Notion for allocating work segments and dividing the workload into easy to use sizable chunks.
 
 ## Main files
 
 * [Index.html](index.html) 
-* [Index.js](index.js)
 * [Index.js](index.js)
 * [app.js](app.js)
 * [micWork](micWork)
