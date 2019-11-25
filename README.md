@@ -37,10 +37,10 @@ During our software development cycle, we used Notion for allocating work segmen
 
 ## Main files
 
--   [Index.html]()
--   [Index.js]()
--   [app.js]()
--   [micWork]()
+-   [index.html](./client/index.html)
+-   [index.js](./client/index.js)
+-   [app.js](./app.js)
+-   [micWork](./micWork)
 
 ## Client Folder
 
