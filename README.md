@@ -1,4 +1,4 @@
-### **_Overall Winner - DurHack 2019_**
+### **_1st Place DurHack 2019 🎉_**
 
 # Vhysio: AI Physio for the Visually Impaired
 
@@ -8,22 +8,26 @@
 -   View our presentation slides at: http://bit.ly/2OEQrWv
 -   Our DevPost Submission for DurHack2019: https://devpost.com/software/durhack2019-qiptux
 
-### Vhysio is a web app utilising cutting edge Machine Learning library, tensorflow.js to enable accessible physiotherapy for the Visually Impaired, talking through exercises by responding to users' postures in real-time.
+### Vhysio is a web app utilising **_tensorflow.js_**, a cutting edge browser based Machine Learning library, to enable accessible physiotherapy for the Visually Impaired - talking through exercises by responding to users' postures in real-time.
 
+![Alisa training the model]()
 Vhysio makes it easier for users to not only complete but to improve their techniques independently.
 
 ## Technology
 
-Vhysio utilises AI Machine Learning technology to learn what makes a particular position correct and incorrect. It has learnt
-off a dataset of images to predict whether the position is correct, or incorrect - and what makes it so.
+### Machine Learning - tensorflow.js
 
-We have used 'TeachableMachine' A web-based AI Machine Learning tool to train our models in the various physiotherapy poses.
+Vhysio uses a [tensorflow.js](https://www.tensorflow.org/js) (browser based) model to make predictions on the state of the current users pose. It has been trained on a dataset of images created by us (~600 images per pose) to predict whether the position is correct, or incorrect - and what makes it so.
+
+We have used [TeachableMachine](https://teachablemachine.withgoogle.com/), a web-based Machine Learning tool, to train our models in the various physiotherapy poses.
 
 Google's Speech-to-Text API was also used to enable the application to be accessible by the visually impaired. The user can start their exercises via speech remotely this is more convenient and easier to use for our target audience.
 
+(Deprecated due to ease of use of in-browser 'Windows WebKit Speech Recognition' alternative)
+
 The application utilises Windows WebKit Speech Recognition, for text-to-speech. This is useful for the visually impaired as they can hear if they are in the right position as the application will tell them to adjust their posture if incorrect.
 
-We also use the webcam to track the user's movement which is fed as input to the machine learning model and outputs a status on the user's posture.
+We also use the webcam to track the user's movement which is fed as input to the posenet machine learning model and outputs posture image on the user's body.
 
 ## Supportability
 
