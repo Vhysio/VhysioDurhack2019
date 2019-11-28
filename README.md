@@ -10,7 +10,6 @@
 
 ### Vhysio is a web app utilising **_tensorflow.js_**, a cutting edge browser based Machine Learning library, to enable accessible physiotherapy for the Visually Impaired - talking through exercises by responding to users' postures in real-time.
 
-![Alisa training the model]()
 Vhysio makes it easier for users to not only complete but to improve their techniques independently.
 
 ## Technology
