@@ -7,10 +7,34 @@
 -   Access the live application at: https://vhysio.herokuapp.com/
 -   View our presentation slides at: http://bit.ly/2OEQrWv
 -   Our DevPost Submission for DurHack2019: https://devpost.com/software/durhack2019-qiptux
+-   Our Demo Video:
+    https://www.youtube.com/watch?v=WkkFUl41TWc&feature=youtu.be
+-   Our presentation for 2020 imagine cup:
+    https://www.youtube.com/watch?v=GpqsrE4nKT8
 
 ### Vhysio is a web app utilising **_tensorflow.js_**, a cutting edge browser based Machine Learning library, to enable accessible physiotherapy for the Visually Impaired - talking through exercises by responding to users' postures in real-time.
 
 Vhysio makes it easier for users to not only complete but to improve their techniques independently.
+
+## How to install and use Vhysio
+
+-   Install and Starting Instructions
+-   Unzip VhysioDurhack2019-master.zip
+-   Open `client/index.html` in web browser
+
+_Or_
+
+-   Unzip `VhysioDurhack2019-master.zip`
+-   `cd` into `VhysioDurhack2019-master`
+-   Install `node`
+-   `npm install`
+-   `node app.js`
+
+## How to use Vhysio
+
+-   Allow browser access to microphone and camera
+-   Say “start exercises” or press “Start”
+-   Try to do a “back bend stretch” approximately 8 foot away from the webcam with whole body in frame like in demo video. (only works in one orientation currently)
 
 ## Technology
 
