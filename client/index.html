@@ -58,6 +58,8 @@
     </head>
 
     <body>
+        <script src="microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+
         <!-- Heading -->
         <nav class="navbar navbar-light bg-light">
             <span class="navbar-brand mb-0 h1 ">VHYSIO</span>
@@ -79,10 +81,18 @@
                         class="card border-info mb-3"
                         style="max-width: 18rem;"
                     >
-                        <button
+                        <!-- <button
                             type="button"
                             class="btn btn-success btn-lg btn-block"
                             onclick="init(0)"
+                            id="speechsdkStartContinuousRecognition"
+
+                        > -->
+                        <button
+                            type="button"
+                            class="btn btn-success btn-lg btn-block"
+                            id="speechsdkStartContinuousRecognition"
+
                         >
                             Start
                         </button>
