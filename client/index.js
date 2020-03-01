@@ -29,6 +29,14 @@ var currentPosture_and_stream = { Posture: "Unsure", Streak: 1 };
 var lastCall = "Unsure";
 var flag = true;
 
+function Initialize(onComplete) {
+    if (!!window.SpeechSDK) {
+        document.getElementById("content").style.display = "block";
+        document.getElementById("warning").style.display = "none";
+        onComplete(window.SpeechSDK);
+    }
+}
+
 async function init(URLno) {
     var URL = URL1;
     if (URLno == 1) {
@@ -228,45 +236,220 @@ function drawPose(pose) {
     }
 }
 
-try {
-    let started = true;
-    window.SpeechRecognition =
-        window.webkitSpeechRecognition || window.SpeechRecognition;
-    let finalTranscript = "";
-    let recognition = new window.SpeechRecognition();
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 10;
-    recognition.continuous = true;
-    recognition.onresult = event => {
-        let interimTranscript = "";
-        for (
-            let i = event.resultIndex, len = event.results.length;
-            i < len;
-            i++
-        ) {
-            let transcript = event.results[i][0].transcript;
-            if (transcript.includes("start exercises")) {
-                if (started) {
-                    started = false;
-                    init(0);
-
-                    console.log("Start Exercises");
-                    // Removes the div with the 'div-02' id}}
-                }
-            }
-            if (event.results[i].isFinal) {
-                finalTranscript += transcript;
-            } else {
-                interimTranscript += transcript;
-            }
-        }
-        speech.innerHTML =
-            '<i style="color:#ddd;">' + interimTranscript + "</>";
-        // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
-    };
-    recognition.start();
-} catch (err) {
-    alert(
-        "Unfortunatley this Browser/OS combination is unsupported. For best results use Google Chrome on Desktop or Android"
-    );
+function Initialize(onComplete) {
+    if (!!window.SpeechSDK) {
+        onComplete(window.SpeechSDK);
+    }
 }
+
+let angus = " ";
+var phraseDiv, statusDiv;
+var phrases;
+var SpeechSDK;
+var recognizer;
+
+var reco;
+var sdkStartContinousRecognitionBtn, sdkStopContinousRecognitionBtn;
+var voiceOutput;
+
+var soundContext = undefined;
+try {
+    var AudioContext =
+        window.AudioContext || // our preferred impl
+        window.webkitAudioContext || // fallback, mostly when on Safari
+        false; // could not find.
+
+    if (AudioContext) {
+        soundContext = new AudioContext();
+    } else {
+        alert("Audio context not supported");
+    }
+} catch (e) {
+    window.console.log("no sound context found, no audio output. " + e);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    createBtn = document.getElementById("createBtn");
+    sdkStartContinousRecognitionBtn = document.getElementById(
+        "speechsdkStartContinuousRecognition"
+    );
+    sdkStopContinousRecognitionBtn = document.getElementById(
+        "speechsdkStopContinuousRecognition"
+    );
+    phraseDiv = document.getElementById("phraseDiv");
+    statusDiv = document.getElementById("statusDiv");
+    phrases = document.getElementById("phrases");
+    voiceOutput = document.getElementById("voiceOutput");
+
+    // Starts continuous speech recognition.
+    sdkStartContinousRecognitionBtn.addEventListener("click", function() {
+        var lastRecognized = "";
+
+        // If an audio file was specified, use it. Else use the microphone.
+        var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+
+        var speechConfig;
+        speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
+            "f9bef20c5e064a65b33c3467e56f8e8b",
+            "westus"
+        );
+
+        speechConfig.speechRecognitionLanguage = "en-US";
+        reco = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+
+        // Before beginning speech recognition, setup the callbacks to be invoked when an event occurs.
+
+        // The event recognizing signals that an intermediate recognition result is received.
+        // You will receive one or more recognizing events as a speech phrase is recognized, with each containing
+        // more recognized speech. The event will contain the text for the recognition since the last phrase was recognized.
+        reco.recognizing = function(s, e) {
+            angus = lastRecognized + e.result.text;
+            console.log("start");
+            speech.innerHTML = '<i style="color:#ddd;">' + angus + "</>";
+            if (angus.includes("start exercises")) {
+                init(0);
+
+                console.log("Start Exercises");
+            }
+            console.log("hello");
+        };
+
+        // The event recognized signals that a final recognition result is received.
+        // This is the final event that a phrase has been recognized.
+        // For continuous recognition, you will get one recognized event for each phrase recognized.
+        reco.recognized = function(s, e) {
+            window.console.log(e);
+
+            // Indicates that recognizable speech was not detected, and that recognition is done.
+            if (e.result.reason === SpeechSDK.ResultReason.NoMatch) {
+                var noMatchDetail = SpeechSDK.NoMatchDetails.fromResult(
+                    e.result
+                );
+            } else {
+                compareText(e.result.text);
+            }
+
+            lastRecognized += e.result.text + "\r\n";
+        };
+
+        reco.canceled = function(s, e) {};
+
+        // Signals that a new session has started with the speech service
+        reco.sessionStarted = function(s, e) {};
+
+        // Signals the end of a session with the speech service.
+        reco.sessionStopped = function(s, e) {
+            sdkStartContinousRecognitionBtn.disabled = false;
+        };
+
+        // Signals that the speech service has started to detect speech.
+        reco.speechStartDetected = function(s, e) {};
+
+        // Signals that the speech service has detected that speech has stopped.
+        reco.speechEndDetected = function(s, e) {};
+
+        // Starts recognition
+        reco.startContinuousRecognitionAsync();
+        sdkStartContinousRecognitionBtn.disabled = true;
+    });
+
+    var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+    var speechConfig;
+    speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
+        "f9bef20c5e064a65b33c3467e56f8e8b",
+        "westus"
+    );
+
+    speechConfig.speechRecognitionLanguage = "en-US";
+    reco = new SpeechSDK.IntentRecognizer(speechConfig, audioConfig);
+
+    reco.recognizing = function(s, e) {};
+    reco.canceled = function(s, e) {};
+
+    // The event recognized signals that a final recognition result is received.
+    // This is the final event that a phrase has been recognized.
+    // For continuous recognition, you will get one recognized event for each phrase recognized.
+    reco.recognized = function(s, e) {
+        // Depending on what result reason is returned, different properties will be populated.
+        switch (e.result.reason) {
+            // This case occurs when speech was successfully recognized, but the speech did not match an intent from the Language Understanding Model.
+            case SpeechSDK.ResultReason.RecognizedSpeech:
+                break;
+
+            // Both speech an intent from the model was recognized.
+            case SpeechSDK.ResultReason.RecognizedIntent:
+                // The actual JSON returned from Language Understanding is a bit more complex to get to, but it is available for things like
+                // the entity name and type if part of the intent.
+                break;
+
+            // No match was found.
+            case SpeechSDK.ResultReason.NoMatch:
+                var noMatchDetail = SpeechSDK.NoMatchDetails.fromResult(
+                    e.result
+                );
+                break;
+        }
+    };
+
+    // Signals that a new session has started with the speech service
+    reco.sessionStarted = function(s, e) {};
+
+    // Signals the end of a session with the speech service.
+    reco.sessionStopped = function(s, e) {
+        sdkStartContinousRecognitionBtn.disabled = false;
+        sdkStopContinousRecognitionBtn.disabled = true;
+    };
+
+    // Signals that the speech service has started to detect speech.
+    reco.speechStartDetected = function(s, e) {};
+
+    // Signals that the speech service has detected that speech has stopped.
+    reco.speechEndDetected = function(s, e) {};
+
+    Initialize(function(speechSdk) {
+        SpeechSDK = speechSdk;
+    });
+});
+// OLD SPEECH TO TEXT
+// try {
+//     let started = true;
+//     window.SpeechRecognition =
+//         window.webkitSpeechRecognition || window.SpeechRecognition;
+//     let finalTranscript = "";
+//     let recognition = new window.SpeechRecognition();
+//     recognition.interimResults = true;
+//     recognition.maxAlternatives = 10;
+//     recognition.continuous = true;
+//     recognition.onresult = event => {
+//         let interimTranscript = "";
+//         for (
+//             let i = event.resultIndex, len = event.results.length;
+//             i < len;
+//             i++
+//         ) {
+//             let transcript = event.results[i][0].transcript;
+//             if (transcript.includes("start exercises")) {
+//                 if (started) {
+//                     started = false;
+//                     init(0);
+
+//                     console.log("Start Exercises");
+//                     // Removes the div with the 'div-02' id}}
+//                 }
+//             }
+//             if (event.results[i].isFinal) {
+//                 finalTranscript += transcript;
+//             } else {
+//                 interimTranscript += transcript;
+//             }
+//         }
+//         speech.innerHTML =
+//             '<i style="color:#ddd;">' + interimTranscript + "</>";
+//         // finalTranscript + '<i style="color:#ddd;">' + interimTranscript + "</>";
+//     };
+//     recognition.start();
+// } catch (err) {
+//     alert(
+//         "Unfortunatley this Browser/OS combination is unsupported. For best results use Google Chrome on Desktop or Android"
+//     );
+// }
