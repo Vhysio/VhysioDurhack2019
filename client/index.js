@@ -39,8 +39,12 @@ function Initialize(onComplete) {
 
 async function init(URLno) {
     var URL = URL1;
+    document.getElementById("stretch").src = "../back bend.png";
+
     if (URLno == 1) {
         URL = URL2;
+        document.getElementById("stretch").src = "../one arm up.png";
+
     }
 
     const modelURL = URL + "model.json";
@@ -70,7 +74,7 @@ async function init(URLno) {
         labelContainer.appendChild(document.createElement("div"));
     }
     var startmsg = new SpeechSynthesisUtterance(
-        "Starting Your Exercises. Beginning with Back Bend Stretch"
+        "Starting Your Exercises. Stand 10 feet away from your webcam. The first Stretch Back Bend Stretch"
     );
 
     if (URLno == 1) {
@@ -138,8 +142,8 @@ async function predict() {
             "%" +
             `<div class="progress">
                 <div class="progress-bar progress-bar-striped ${
-                    bar_colours[i]
-                }" role="progressbar" style="width: ${(
+            bar_colours[i]
+            }" role="progressbar" style="width: ${(
                 prediction[i].probability * 100
             ).toFixed(0)}%" aria-valuenow=${(
                 prediction[i].probability * 100
@@ -159,10 +163,10 @@ async function predict() {
                     if (lastCall != prediction[i].className) {
                         console.log(
                             "Has been " +
-                                prediction[i].className +
-                                " " +
-                                STREAK +
-                                " times in a row"
+                            prediction[i].className +
+                            " " +
+                            STREAK +
+                            " times in a row"
                         );
                         // Current Status
                         footer.innerHTML = "Status: " + prediction[i].className;
@@ -268,7 +272,7 @@ try {
     window.console.log("no sound context found, no audio output. " + e);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     createBtn = document.getElementById("createBtn");
     sdkStartContinousRecognitionBtn = document.getElementById(
         "speechsdkStartContinuousRecognition"
@@ -282,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function() {
     voiceOutput = document.getElementById("voiceOutput");
 
     // Starts continuous speech recognition.
-    sdkStartContinousRecognitionBtn.addEventListener("click", function() {
+    sdkStartContinousRecognitionBtn.addEventListener("click", function () {
         var lastRecognized = "";
 
         // If an audio file was specified, use it. Else use the microphone.
@@ -302,7 +306,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // The event recognizing signals that an intermediate recognition result is received.
         // You will receive one or more recognizing events as a speech phrase is recognized, with each containing
         // more recognized speech. The event will contain the text for the recognition since the last phrase was recognized.
-        reco.recognizing = function(s, e) {
+        reco.recognizing = function (s, e) {
             angus = lastRecognized + e.result.text;
             console.log("start");
             speech.innerHTML = '<i style="color:#ddd;">' + angus + "</>";
@@ -317,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // The event recognized signals that a final recognition result is received.
         // This is the final event that a phrase has been recognized.
         // For continuous recognition, you will get one recognized event for each phrase recognized.
-        reco.recognized = function(s, e) {
+        reco.recognized = function (s, e) {
             window.console.log(e);
 
             // Indicates that recognizable speech was not detected, and that recognition is done.
@@ -332,21 +336,21 @@ document.addEventListener("DOMContentLoaded", function() {
             lastRecognized += e.result.text + "\r\n";
         };
 
-        reco.canceled = function(s, e) {};
+        reco.canceled = function (s, e) { };
 
         // Signals that a new session has started with the speech service
-        reco.sessionStarted = function(s, e) {};
+        reco.sessionStarted = function (s, e) { };
 
         // Signals the end of a session with the speech service.
-        reco.sessionStopped = function(s, e) {
+        reco.sessionStopped = function (s, e) {
             sdkStartContinousRecognitionBtn.disabled = false;
         };
 
         // Signals that the speech service has started to detect speech.
-        reco.speechStartDetected = function(s, e) {};
+        reco.speechStartDetected = function (s, e) { };
 
         // Signals that the speech service has detected that speech has stopped.
-        reco.speechEndDetected = function(s, e) {};
+        reco.speechEndDetected = function (s, e) { };
 
         // Starts recognition
         reco.startContinuousRecognitionAsync();
@@ -363,13 +367,13 @@ document.addEventListener("DOMContentLoaded", function() {
     speechConfig.speechRecognitionLanguage = "en-US";
     reco = new SpeechSDK.IntentRecognizer(speechConfig, audioConfig);
 
-    reco.recognizing = function(s, e) {};
-    reco.canceled = function(s, e) {};
+    reco.recognizing = function (s, e) { };
+    reco.canceled = function (s, e) { };
 
     // The event recognized signals that a final recognition result is received.
     // This is the final event that a phrase has been recognized.
     // For continuous recognition, you will get one recognized event for each phrase recognized.
-    reco.recognized = function(s, e) {
+    reco.recognized = function (s, e) {
         // Depending on what result reason is returned, different properties will be populated.
         switch (e.result.reason) {
             // This case occurs when speech was successfully recognized, but the speech did not match an intent from the Language Understanding Model.
@@ -392,21 +396,21 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // Signals that a new session has started with the speech service
-    reco.sessionStarted = function(s, e) {};
+    reco.sessionStarted = function (s, e) { };
 
     // Signals the end of a session with the speech service.
-    reco.sessionStopped = function(s, e) {
+    reco.sessionStopped = function (s, e) {
         sdkStartContinousRecognitionBtn.disabled = false;
         sdkStopContinousRecognitionBtn.disabled = true;
     };
 
     // Signals that the speech service has started to detect speech.
-    reco.speechStartDetected = function(s, e) {};
+    reco.speechStartDetected = function (s, e) { };
 
     // Signals that the speech service has detected that speech has stopped.
-    reco.speechEndDetected = function(s, e) {};
+    reco.speechEndDetected = function (s, e) { };
 
-    Initialize(function(speechSdk) {
+    Initialize(function (speechSdk) {
         SpeechSDK = speechSdk;
     });
 });
