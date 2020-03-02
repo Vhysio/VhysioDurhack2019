@@ -294,8 +294,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var speechConfig;
         speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
-            "f9bef20c5e064a65b33c3467e56f8e8b",
-            "westus"
+            "62f2740b06f84e0a957664d07b654c3c",
+            "uksouth"
         );
 
         speechConfig.speechRecognitionLanguage = "en-US";
