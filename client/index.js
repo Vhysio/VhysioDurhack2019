@@ -39,11 +39,11 @@ function Initialize(onComplete) {
 
 async function init(URLno) {
     var URL = URL1;
-    document.getElementById("stretch").src = "../back bend.png";
+    document.getElementById("stretch").src = "./images/back bend.png";
 
     if (URLno == 1) {
         URL = URL2;
-        document.getElementById("stretch").src = "../one arm up.png";
+        document.getElementById("stretch").src = "./images/one arm up.png";
 
     }
 
@@ -74,7 +74,7 @@ async function init(URLno) {
         labelContainer.appendChild(document.createElement("div"));
     }
     var startmsg = new SpeechSynthesisUtterance(
-        "Starting Your Exercises. Stand 10 feet away from your webcam. The first Stretch Back Bend Stretch"
+        "Starting Your Exercises. Stand 10 feet away from your web cam. The first Stretch is Back Bend Stretch"
     );
 
     if (URLno == 1) {
