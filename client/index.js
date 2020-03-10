@@ -7,7 +7,12 @@ const URL2 = "https://teachablemachine.withgoogle.com/models/Jttf39ey/"; // 2.0 
 
 // const URL1 = "https://teachablemachine.withgoogle.com/models/nFctljBl/"; // Back bend
 // const URL1 = "https://teachablemachine.withgoogle.com/models/w_q11QNp/"; // DEMO
-const URL1 = "https://teachablemachine.withgoogle.com/models/8gQNM0Uk/"; // 2.0
+// const URL1 = "https://teachablemachine.withgoogle.com/models/8gQNM0Uk/"; // 2.0
+
+// const URL1 = "https://teachablemachine.withgoogle.com/models/MvtYckxj/"; // 3.0
+const URL1 = "https://teachablemachine.withgoogle.com/models/fT57VpGF/"; // 4.0
+
+
 let model, model2, webcam, ctx, labelContainer, maxPredictions;
 
 var bar_colours = [
