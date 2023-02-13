@@ -1,4 +1,4 @@
-### **_1st Place DurHack 2019 🎉_**
+### **_1st Place DurHack 2019 + 2nd Place Microsoft Imagein Cup EMEA🎉_**
 
 # Vhysio: AI Physio for the Visually Impaired
 
